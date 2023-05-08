@@ -1,0 +1,14 @@
+FS=8000;
+n=(0:8000);
+xn_1=fix(n/40)<200&fix(n/40)>=0&fix(n/40)==n/40;%得到200个脉冲
+%sum(xn_1);%得到xn_1脉冲个数
+%xn_2=fix(3*n/80)<300&fix(3*n/80)>=0&fix(3*n/80)==3*n/80;%这么写只能得到100个脉冲，太少了效果不好
+xn_2=fix(n/26)<300&fix(n/26)>=0&fix(n/26)==n/26;%80/3向下取整得到26，有300个脉冲，效果较好
+%sum(xn_2);%得到xn_2脉冲个数
+%sound(double(xn_1),FS);
+%sound(double(xn_2),FS);
+figure(1)
+subplot(2,1,1);
+stem(n,xn_1);
+subplot(2,1,2);
+stem(n,xn_2);
