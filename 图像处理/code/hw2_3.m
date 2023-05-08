@@ -1,0 +1,13 @@
+load('hall.mat');
+testpic=double(hall_gray(1:60,1:60))-128;%选取测试图像左上角并预处理
+B=mydct2(testpic);%二维DCT
+B1=[B(:,1:56),zeros(60,4)];%DCT系数矩阵右侧四列置零
+B2=[zeros(60,4),B(:,5:60)];%DCT系数矩阵左侧四列置零
+A1=myidct2(B1)+128;
+A2=myidct2(B2)+128;
+figure(1)
+imshow(uint8(A1));%DCT系数矩阵右侧四列置零后逆变换图像
+figure(2)
+imshow(uint8(A2));%DCT系数矩阵左侧四列置零后逆变换图像
+figure(3)
+imshow(uint8(testpic+128));%原图

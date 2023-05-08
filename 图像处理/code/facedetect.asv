@@ -1,0 +1,51 @@
+function [pic_return,isface] =facedetect(pic,L,d_max)
+[v]=fetch_v('Faces/',33,L);%得到标准v
+[H,W,~]=size(pic);
+x=ceil(H/20);%纵向正方形块数
+size_x=20*ones(1,x);%行方向分割方法
+y=ceil(W/20);%横向正方形块数
+size_y=20*ones(1,y);%列方向分割方法
+if(20*x>H)
+    size_x=[20*ones(1,x-1),H+20-20*x];
+end
+if(20*y>W)
+    size_y=[20*ones(1,y-1),W+20-20*y];
+end
+%寻找可以判做人脸的图块
+isface=zeros(x,y);%根据阈值判断图像块是不是满足标准，满足则对应元素置1，否则置0
+C=mat2cell(double(pic),size_x,size_y,3);%分块
+for ii=1:x
+    for jj=1:y
+        d=distance_uv(C{ii,jj},v,L);%得到图像块特征和标准的距离
+        if(d<d_max)%d_max作为阈值
+            isface(ii,jj)=1;
+        end
+        
+    end
+end
+imshow(pic);
+k_H=1;%标示处理到的图像块位置
+k_W=1;
+while(find(isface(1:x-2,1:y-2),1))
+    for i=k_H:x-2
+        for j=k_W:y-2
+           if(isface(i,j)==-1)%数值是-1代表处理完毕
+               continue
+           end
+           if(sum(sum(isface(i:i+2,j:j+2)))>=5)
+               isface(i:i+2,j:j+2)=-1;
+               rectangle('Position',[20*i+3*20,20*j 2 3*20 3*20],);
+           elseif(sum(sum(isface(i:i+1,j:j+1)))>=2)
+               isface(i:i+1,j:j+1)=-1;
+
+           end
+
+
+
+        end
+    end
+
+
+
+pic_return=uint8(cell2mat(C));
+end

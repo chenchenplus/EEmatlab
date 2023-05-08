@@ -1,0 +1,14 @@
+load('jpegcodes.mat');
+load('JpegCoeff.mat');
+load('hall.mat');
+B1=DCdecode(jpegcodes.DC_code,DCTAB,H*W/64);
+AC_encodetable=[ACTAB;16,0,11,1,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0;
+                0,0,4,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0];%用ZRL和EOB编码填充
+B2=ACdecode(jpegcodes.AC_code,AC_encodetable,8*8-1,H*W/64);
+B=[B1;B2];%拼接DC和AC部分
+pic_jpeg=pic_antiprocess(B,QTAB,H,W);
+figure(1)
+imshow(pic_jpeg);
+figure(2)
+imshow(hall_gray);
+disp(PSNR(hall_gray,pic_jpeg));

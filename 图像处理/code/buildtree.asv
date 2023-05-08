@@ -1,0 +1,30 @@
+function tree=buildtree(encode_table,type)
+[m,n]=size(encode_table);
+if(type==0)%构造DC解码的tree
+    tree(1)= struct('left',0,'right',0,'category',-1);%根节点
+    index=1;%每次从根节点开始遍历
+    treesize=1;%树的结点数
+    for i=1:m
+        l=encode_table(i,1);%编码长度
+        code=encode_table(i,2:l+1);
+        for j=1:length(code)
+            if(code(j)==0)
+                if(tree(index).left==0)%不存在左子树
+                    treesize=treesize+1;
+                    tree(treesize)=struct('left',0,'right',0,'category',-1);%构建左子树
+                    tree(index).left=treesize;%连接左子树
+                    index=treesize;
+                else
+                    index=tree(index).left;%更新index
+                end
+            else
+            end
+            if(j==length(code))
+                        tree(index).category=m;
+             end
+        end
+    end
+elseif(type==1)%构造AC解码的tree
+    tree = struct('left',0,'right',0,'run',-1,'size',-1);
+end
+end

@@ -1,0 +1,21 @@
+pic=imread('test1.jpg');
+figure(1)
+subplot(1,3,1)
+[~]=facedetect(imrotate(pic,-90),5,0.7,20);
+title('逆时针旋转90°');
+subplot(1,3,2)
+%[~]=facedetect(imresize(pic,size(pic,1),2*size(pic,2)),5,0.7,20);
+title('高度不变，宽度拉伸成两倍');
+subplot(1,3,3)
+[~]=facedetect(imadjust(pic,[0.2 0.3 0;0.6 0.6 1],[]),5,0.7,20);
+title('适当改变颜色');
+pic=imread('test2.jpg');
+subplot(1,3,1)
+[~]=facedetect(imrotate(pic,-90),5,0.7,20);
+title('逆时针旋转90°');
+subplot(2,3,2)
+%[~]=facedetect(imresize(pic,size(pic,1),2*size(pic,2)),5,0.7,20);
+title('高度不变，宽度拉伸成两倍');
+subplot(2,3,6)
+[~]=facedetet(imadjust(pic,[0.2 0.3 0;0.6 0.6 1],[]),5,0.7,20);
+title('适当改变颜色');
